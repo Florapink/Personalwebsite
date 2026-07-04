@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shruti Satheesh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --night:   #0c0c0e;
+  --night-d: #080809;
+  --cream:   #0f0f12;
+  --cream-d: #0a0a0d;
+  --blush:   #e8a0b0;
+  --rose:    #c87a82;
+  --rose-d:  #a85a62;
+  --sage:    #8aaa6a;
+  --sky:     #7aaac6;
+  --text:    rgba(255,255,255,0.92);
+  --muted:   rgba(255,255,255,0.4);
+  --border:  rgba(255,255,255,0.1);
+  /* glass utility */
+  --glass-bg:     rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.12);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Lora', serif;
+  background: #080809;
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+#cursor {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--rose);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s, width 0.2s, height 0.2s, opacity 0.2s;
+}
+#cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 9998;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(180,106,114,0.4);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s cubic-bezier(0.22,1,0.36,1), width 0.3s, height 0.3s;
+}
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor { width: 14px; height: 14px; }
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring { width: 54px; height: 54px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%); right: auto;
+  z-index: 1000;
+  display: flex; align-items: center; gap: 0;
+  background: rgba(45,58,71,0.88);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255,247,230,0.1);
+  border-radius: 100px;
+  padding: 0.55rem 0.6rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.nav-links {
+  display: flex; gap: 0; list-style: none;
+}
+.nav-links a {
+  color: rgba(255,247,230,0.65);
+  text-decoration: none; font-size: 0.72rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.45rem 1rem; border-radius: 100px;
+  transition: color 0.25s, background 0.25s;
+  cursor: none; position: relative;
+}
+.nav-links a:hover { color: var(--cream); background: rgba(255,247,230,0.08); }
+
+/* tubelight active state */
+.nav-links a.nav-active {
+  color: var(--cream);
+  background: rgba(255,247,230,0.1);
+}
+.nav-links a.nav-active::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 3px;
+  background: var(--rose);
+  border-radius: 0 0 3px 3px;
+}
+.nav-links a.nav-active::after {
+  content: '';
+  position: absolute;
+  top: -14px; left: 50%; transform: translateX(-50%);
+  width: 48px; height: 16px;
+  background: radial-gradient(ellipse at center top, rgba(180,106,114,0.55) 0%, transparent 70%);
+  filter: blur(3px);
+  border-radius: 50%;
+  animation: tubePulse 2s ease-in-out infinite;
+}
+@keyframes tubePulse {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scaleX(1); }
+  50%       { opacity: 1;   transform: translateX(-50%) scaleX(1.15); }
+}
+
+.nav-cta {
+  background: var(--rose) !important; color: var(--cream) !important;
+  margin-left: 0.3rem; font-weight: 500 !important;
+}
+.nav-cta:hover { background: #c4787f !important; }
+.nav-cta.nav-active::before,
+.nav-cta.nav-active::after { display: none; }
+
+/* ── HERO ── */
+.hero {
+  position: relative; overflow: hidden;
+  min-height: 100vh; width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 8rem 4rem 6rem;
+  background: #000;
+}
+.hero-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; opacity: 0;
+}
+.hero-video-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1;
+}
+.hero-content {
+  position: relative; z-index: 3;
+  max-width: 680px; width: 100%;
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+}
+.hero-big {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1; pointer-events: none;
+}
+.hero-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(5rem, 13vw, 15rem);
+  font-weight: 900;
+  color: rgba(255,255,255,0.025);
+  line-height: 0.9;
+  text-align: center;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  user-select: none;
+}
+.hero-eyebrow {
+  font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.45); margin-bottom: 1.6rem;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.hero-eyebrow::before { display: none; }
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+  font-weight: 700; line-height: 1.08;
+  color: #fff; margin-bottom: 1.6rem;
+}
+.hero-title em { font-style: italic; color: var(--rose); font-weight: 400; }
+.typewriter-cursor {
+  display: inline-block;
+  color: var(--rose);
+  font-style: normal;
+  animation: cursorBlink 0.8s step-end infinite;
+  margin-left: 2px;
+}
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.hero-desc {
+  font-size: 1rem; line-height: 1.8;
+  color: rgba(255,255,255,0.55);
+  max-width: 420px; margin-bottom: 2.5rem;
+}
+.hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.btn-primary {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 0.85rem 2.2rem; border-radius: 100px;
+  font-size: 0.82rem; font-weight: 500; text-decoration: none;
+  letter-spacing: 0.06em; transition: all 0.25s;
+  cursor: none; display: inline-flex; align-items: center; gap: 0.5rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-primary:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+.btn-outline {
+  background: var(--rose);
+  color: #fff;
+  padding: 0.85rem 2.2rem; border-radius: 100px;
+  font-size: 0.82rem; font-weight: 500; text-decoration: none; letter-spacing: 0.06em;
+  transition: all 0.25s; cursor: none; display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-outline:hover { background: #d4888f; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,122,130,0.4); }
+
+.hero-stats {
+  display: flex; flex-direction: column; gap: 2rem; text-align: right;
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem; font-weight: 700; color: var(--cream);
+  line-height: 1;
+}
+.stat-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,247,230,0.4); margin-top: 0.25rem; }
+.stat-divider { width: 1px; height: 60px; background: rgba(255,247,230,0.1); margin-left: auto; }
+
+.hero-scroll-hint {
+  grid-column: 1 / -1; grid-row: 2;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem; gap: 0.75rem;
+  font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,247,230,0.25); z-index: 2;
+}
+.scroll-line {
+  width: 40px; height: 1px; background: rgba(255,247,230,0.15);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse { 0%,100% { opacity: 0.3; transform: scaleX(1); } 50% { opacity: 1; transform: scaleX(1.3); } }
+
+.hero-wave {
+  position: absolute; bottom: -1px; left: 0; right: 0; z-index: 3;
+}
+
+/* ── HERO BRAND IMAGE ── */
+.hero-brand-img {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 45%;
+  pointer-events: none;
+  z-index: 1;
+}
+.hero-brand-img img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  object-position: right center;
+  opacity: 0.85;
+}
+.hero-brand-img::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--night) 0%,
+    var(--night) 15%,
+    rgba(45,58,71,0.7) 35%,
+    rgba(45,58,71,0.2) 60%,
+    transparent 100%
+  );
+  z-index: 2;
+}
+
+/* scroll progress bar */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 2px; z-index: 9999;
+  background: linear-gradient(to right, rgba(180,106,114,0.2), rgba(180,106,114,0.4));
+}
+#scroll-progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, var(--rose), #c4787f);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.15s ease-out;
+  box-shadow: 0 0 6px rgba(180,106,114,0.5);
+}
+
+/* ── HERO ORBS ── */
+.hero-orbs { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px); opacity: 0.18;
+}
+.orb-1 {
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, #B46A72, transparent 70%);
+  top: -100px; right: 10%;
+  animation: orbFloat1 14s ease-in-out infinite alternate;
+}
+.orb-2 {
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, #A9B7C6, transparent 70%);
+  bottom: -60px; left: 25%;
+  animation: orbFloat2 18s ease-in-out infinite alternate;
+}
+.orb-3 {
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, #A9B58A, transparent 70%);
+  top: 30%; right: 35%;
+  animation: orbFloat3 11s ease-in-out infinite alternate;
+}
+@keyframes orbFloat1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-40px, 60px) scale(1.08); }
+}
+@keyframes orbFloat2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(50px, -40px) scale(0.95); }
+}
+@keyframes orbFloat3 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-30px, -50px) scale(1.1); }
+}
+
+/* ── MARQUEE ── */
+.marquee-bar {
+  background: var(--rose);
+  overflow: hidden; white-space: nowrap;
+  padding: 0.65rem 0;
+}
+.marquee-inner {
+  display: inline-flex;
+  animation: marquee 28s linear infinite;
+}
+.marquee-bar:hover .marquee-inner { animation-play-state: paused; }
+.marquee-item {
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,247,230,0.9); padding: 0 2rem; font-weight: 500;
+}
+.marquee-sep { color: rgba(255,247,230,0.4); }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── SECTION BASE ── */
+section { padding: 7rem 4rem; }
+.container { max-width: 1160px; margin: 0 auto; }
+.section-label {
+  font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--rose); margin-bottom: 0.7rem;
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.section-label::before { display: none; }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 700;
+  line-height: 1.1; color: #fff; margin-bottom: 0.75rem;
+}
+.section-title em { font-style: italic; color: var(--rose); font-weight: 400; }
+
+/* ── ABOUT ── */
+.about { background: #080809; }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: stretch; margin-top: 4rem; }
+.about-grid > div:first-child { display: flex; flex-direction: column; }
+.about-lead {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem; font-style: italic;
+  color: rgba(255,255,255,0.85); line-height: 1.6;
+  border-left: 3px solid var(--rose);
+  padding-left: 1.5rem; margin-bottom: 2rem;
+}
+/* headshot */
+.about-headshot {
+  width: 100%; border-radius: 16px; overflow: hidden;
+  flex: 1; min-height: 0;
+  position: relative;
+}
+.about-headshot img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: 38% center;
+  display: block;
+}
+/* right column */
+.about-right {
+  display: flex; flex-direction: column;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding-top: 0;
+}
+.about-block {
+  display: flex; flex-direction: row; gap: 1.5rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.about-block-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.6rem; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  flex-shrink: 0; align-self: center;
+  user-select: none;
+}
+.about-block-content { flex: 1; }
+.edu-degree {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem; font-weight: 700;
+  color: #fff; line-height: 1.2; margin-bottom: 0.5rem;
+}
+.edu-school {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 1rem;
+  margin-bottom: 0.9rem; line-height: 1.4;
+}
+.edu-school .white { color: rgba(255,255,255,0.9); font-weight: 700; }
+.edu-school .rose  { color: var(--rose); font-weight: 700; }
+.edu-details { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+.edu-details li {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 0.9rem;
+  color: var(--rose); line-height: 1.4;
+  padding-left: 1rem; position: relative;
+}
+.edu-details li::before { content: '•'; position: absolute; left: 0; color: var(--rose); }
+.edu-details li .white-text { color: rgba(255,255,255,0.8); }
+.campus-list { list-style: none; display: flex; flex-direction: column; gap: 0.18rem; }
+.campus-list li {
+  font-size: 0.9rem; color: rgba(255,255,255,0.72);
+  line-height: 1.5; padding-left: 1.2rem; position: relative;
+}
+.campus-list li::before { content: '•'; position: absolute; left: 0; color: rgba(255,255,255,0.5); }
+/* resume btn — flip effect */
+.resume-btn {
+  display: block; width: 100%; margin-top: 2rem;
+  position: relative; height: 54px;
+  perspective: 1000px;
+  text-decoration: none; cursor: none;
+  border-radius: 100px; overflow: hidden;
+}
+.resume-btn-face {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 100px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 600; font-style: italic;
+  letter-spacing: 0.02em;
+  transition: opacity 0.35s cubic-bezier(.4,0,.2,1),
+              transform 0.35s cubic-bezier(.4,0,.2,1);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+.resume-btn-front {
+  background: linear-gradient(135deg, var(--rose) 0%, #a85a62 100%);
+  border: 1px solid transparent;
+  color: #fff;
+  transform: rotateX(0deg) translateY(0%);
+  opacity: 1;
+}
+.resume-btn-back {
+  background: linear-gradient(135deg, #1e1e2e 0%, #2a1f2e 100%);
+  border: 1px solid rgba(200,122,130,0.3);
+  color: var(--rose);
+  transform: rotateX(-90deg) translateY(50%);
+  opacity: 0;
+}
+.resume-btn:hover .resume-btn-front {
+  transform: rotateX(90deg) translateY(-50%);
+  opacity: 0;
+}
+.resume-btn:hover .resume-btn-back {
+  transform: rotateX(0deg) translateY(0%);
+  opacity: 1;
+}
+/* where i want to land */
+.goals-block-label {
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.28); margin-bottom: 1rem;
+}
+.goals-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+.goal-pill {
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em;
+  background: rgba(200,122,130,0.08); color: #e8a0a8;
+  padding: 0.45rem 1.1rem; border-radius: 100px;
+  border: 1px solid rgba(200,122,130,0.25);
+  transition: border-color 0.2s;
+  position: relative; overflow: hidden; cursor: none;
+}
+.goal-pill:hover { border-color: rgba(200,122,130,0.55); }
+.goal-pill-spotlight {
+  pointer-events: none; position: absolute; inset: -1px;
+  opacity: 0; transition: opacity 0.3s;
+  border-radius: 100px;
+}
+
+/* ── EXPERIENCE ── */
+.experience { background: #0c0c0f; }
+.experience .section-label { color: var(--blush); }
+.experience .section-title { color: #fff; }
+.exp-header { display: grid; grid-template-columns: 200px 1fr; gap: 3rem; margin-bottom: 0; }
+.exp-list { margin-top: 3rem; }
+.exp-item {
+  display: grid; grid-template-columns: 200px 1fr;
+  gap: 3rem; padding: 2.2rem 0;
+  border-bottom: 1px solid rgba(255,247,230,0.07);
+  cursor: none;
+  transition: background 0.2s;
+  position: relative;
+}
+.exp-item::before {
+  content: '';
+  position: absolute; left: -4rem; right: -4rem; top: 0; bottom: 0;
+  background: rgba(255,247,230,0.02);
+  opacity: 0; transition: opacity 0.25s;
+  pointer-events: none;
+}
+.exp-item:hover::before { opacity: 1; }
+.exp-item:last-child { border-bottom: none; }
+.exp-meta { padding-top: 0.25rem; }
+.exp-date { font-size: 0.72rem; color: rgba(255,255,255,0.75); letter-spacing: 0.04em; margin-bottom: 0.5rem; }
+.exp-badge {
+  display: inline-block;
+  font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.3rem 0.75rem; border-radius: 100px; font-weight: 500;
+}
+.badge-finance { background: rgba(169,181,138,0.15); color: var(--sage); border: 1px solid rgba(169,181,138,0.25); }
+.badge-intern  { background: rgba(247,200,211,0.12); color: var(--blush); border: 1px solid rgba(247,200,211,0.2); }
+.badge-consult { background: rgba(169,183,198,0.12); color: var(--sky); border: 1px solid rgba(169,183,198,0.2); }
+.badge-lead    { background: rgba(180,106,114,0.12); color: #d4909a; border: 1px solid rgba(180,106,114,0.2); }
+.badge-research{ background: rgba(255,247,230,0.06); color: rgba(255,247,230,0.5); border: 1px solid rgba(255,247,230,0.1); }
+.exp-org { font-size: 0.7rem; letter-spacing: 0.06em; color: var(--rose); text-transform: uppercase; margin-bottom: 0.3rem; }
+.exp-role {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem; font-weight: 700; color: rgba(255,255,255,0.92);
+  margin-bottom: 0.9rem; line-height: 1.2;
+}
+.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.exp-bullets li {
+  font-size: 0.85rem; line-height: 1.7; color: rgba(255,247,230,0.78);
+  padding-left: 1rem; position: relative;
+}
+.exp-bullets li::before { content: '·'; position: absolute; left: 0; color: var(--rose); font-size: 1rem; line-height: 1.5; }
+.exp-highlight { color: rgba(255,247,230,0.85); font-weight: 500; }
+
+/* ── PROJECTS ── */
+.projects { background: #080809; }
+.projects-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 3.5rem; }
+.projects-intro-text { font-size: 0.92rem; line-height: 1.8; color: rgba(255,255,255,0.45); max-width: 380px; align-self: end; }
+.projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(200,122,130,0.12); border: 1px solid rgba(200,122,130,0.15); border-radius: 16px; overflow: hidden; }
+.project-card {
+  background: rgba(255,255,255,0.03); padding: 2.5rem;
+  cursor: none; transition: background 0.25s;
+  position: relative; overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+.project-card:hover { background: rgba(120,120,130,0.18); }
+.project-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.75rem; color: var(--rose); font-style: italic;
+  margin-bottom: 1.5rem; display: block;
+}
+.project-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700; color: rgba(255,255,255,0.92);
+  margin-bottom: 0.8rem; line-height: 1.2;
+}
+.project-desc { font-size: 0.84rem; line-height: 1.75; color: rgba(255,255,255,0.45); margin-bottom: 1.5rem; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.project-tag {
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4);
+  padding: 0.25rem 0.65rem; border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.project-arrow {
+  position: absolute; bottom: 2rem; right: 2rem;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s; color: rgba(255,255,255,0.3);
+}
+.project-card:hover .project-arrow {
+  background: var(--rose); border-color: var(--rose); color: #fff;
+  transform: translate(3px, -3px);
+}
+
+/* ── SKILLS ── */
+.skills { background: #0c0c0f; }
+.skills-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; margin-top: 4rem; }
+.skills-intro { font-size: 0.92rem; line-height: 1.8; color: rgba(255,255,255,0.45); }
+.skills-groups { display: flex; flex-direction: column; gap: 0; }
+.skill-row {
+  display: grid; grid-template-columns: 140px 1fr;
+  gap: 2rem; align-items: center;
+  padding: 1.1rem 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.skill-row:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+.skill-row-label { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.skill-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.skill-pill {
+  font-size: 0.78rem; font-weight: 500;
+  background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.7);
+  padding: 0.3rem 0.85rem; border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.2s; cursor: none;
+}
+.skill-pill:hover { border-color: var(--rose); color: var(--rose); background: rgba(200,122,130,0.1); }
+.skill-pill.core { background: rgba(200,122,130,0.15); color: #e8a0a8; border-color: rgba(200,122,130,0.3); }
+.skill-pill.core:hover { background: var(--rose); border-color: var(--rose); color: #fff; }
+
+/* ── AWARDS ── */
+/* ── COMPETITIONS & EVENTS ── */
+.events { background: #0c0c0f; padding-bottom: 0; }
+.events .section-label { color: var(--blush); }
+.events .section-title { color: #fff; }
+
+.events-nav {
+  display: flex; justify-content: flex-end; gap: 0.6rem;
+  padding: 0 4rem 1rem;
+}
+.events-arrow {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  display: flex; align-items: center; justify-content: center;
+  cursor: none; transition: all 0.2s; font-size: 1rem;
+}
+.events-arrow:hover { background: rgba(200,122,130,0.15); border-color: rgba(200,122,130,0.4); color: var(--rose); }
+.events-arrow.hidden { opacity: 0.18; pointer-events: none; filter: grayscale(1); }
+.events-carousel-wrap {
+  overflow: hidden;
+  width: 100%;
+  margin-top: 3rem;
+}
+.events-carousel-track {
+  display: flex; gap: 14px;
+  padding: 0 4rem 5rem;
+  width: max-content;
+  animation: eventsMarquee 40s linear infinite;
+}
+.events-carousel-track { animation-play-state: paused; }
+.events-carousel-wrap.in-view .events-carousel-track { animation-play-state: running; }
+.events-carousel-wrap.in-view:hover .events-carousel-track { animation-play-state: paused; }
+@keyframes eventsMarquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.event-card {
+  flex: 0 0 auto;
+  width: clamp(240px, 28vw, 340px);
+  border-radius: 14px;
+  overflow: visible;
+  position: relative;
+  cursor: none;
+  background: rgba(255,247,230,0.04);
+  border: 1px solid rgba(255,247,230,0.08);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s;
+  --x: 0; --y: 0; --xp: 0; --yp: 0;
+  --spotlight-size: 220px;
+  --hue: 280;
+}
+.event-card::before,
+.event-card::after {
+  pointer-events: none; content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 14px;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+  border: 1px solid transparent;
+}
+.event-card::before {
+  background-image: radial-gradient(
+    calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
+    calc(var(--x) * 1px) calc(var(--y) * 1px),
+    hsl(var(--hue) 100% 55% / 0.9), transparent 100%
+  );
+  filter: brightness(2);
+}
+.event-card::after {
+  background-image: radial-gradient(
+    calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
+    calc(var(--x) * 1px) calc(var(--y) * 1px),
+    hsl(0 100% 100% / 0.15), transparent 100%
+  );
+}
+.event-card .event-spotlight {
+  pointer-events: none;
+  position: absolute; inset: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background-image: radial-gradient(
+    var(--spotlight-size) var(--spotlight-size) at
+    calc(var(--x) * 1px) calc(var(--y) * 1px),
+    hsl(var(--hue) 80% 65% / 0.08), transparent 100%
+  );
+}
+.event-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(180,106,114,0.15);
+}
+.event-card-visual {
+  width: 100%; aspect-ratio: 4/3;
+  position: relative; overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  padding: 1.2rem;
+}
+.event-card-visual::before {
+  content: ''; position: absolute; inset: 0;
+  background: inherit; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.event-card:hover .event-card-visual::before { transform: scale(1.06); }
+.event-card-year {
+  position: relative; z-index: 1;
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem; font-weight: 900; line-height: 1;
+  color: rgba(255,255,255,0.12); pointer-events: none;
+}
+
+/* per-card gradient accents */
+.ev-comp .event-card-visual { background: linear-gradient(145deg, #4a2a30 0%, #2D3A47 100%); }
+.ev-conf .event-card-visual { background: linear-gradient(145deg, #1e3a4a 0%, #2D3A47 100%); }
+.ev-fellow .event-card-visual { background: linear-gradient(145deg, #2a3a28 0%, #2D3A47 100%); }
+
+.event-card-body {
+  padding: 1.3rem 1.4rem 1.5rem;
+}
+.event-card-type {
+  font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,247,230,0.35); margin-bottom: 0.45rem; display: block;
+}
+.event-card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 700; color: rgba(255,255,255,0.92);
+  line-height: 1.2; margin-bottom: 0.9rem;
+}
+.event-card-badge {
+  font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.28rem 0.72rem; border-radius: 100px; font-weight: 600;
+  display: inline-block;
+}
+.badge-winner { background: rgba(180,106,114,0.18); color: #d4909a; border: 1px solid rgba(180,106,114,0.3); }
+.badge-selected { background: rgba(169,181,138,0.15); color: #b5c89a; border: 1px solid rgba(169,181,138,0.25); }
+.badge-fellow { background: rgba(169,183,198,0.15); color: #b0c4d4; border: 1px solid rgba(169,183,198,0.25); }
+.badge-award { background: rgba(247,200,211,0.12); color: var(--blush); border: 1px solid rgba(247,200,211,0.2); }
+
+/* hover overlay */
+.event-card-overlay {
+  position: absolute; inset: 0;
+  background: rgba(30,42,54,0.92);
+  backdrop-filter: blur(4px);
+  display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 1.6rem;
+  opacity: 0; transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.event-card:hover .event-card-overlay {
+  opacity: 1; pointer-events: auto;
+}
+.event-overlay-detail {
+  font-size: 0.8rem; line-height: 1.7;
+  color: rgba(255,247,230,0.7);
+  margin-bottom: 1.2rem;
+}
+.event-overlay-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+  font-weight: 600; color: var(--cream);
+  background: var(--rose); border: none;
+  padding: 0.6rem 1.2rem; border-radius: 100px;
+  cursor: none; width: fit-content;
+  transition: background 0.2s, transform 0.2s;
+}
+.event-overlay-btn:hover { background: #c4787f; transform: translateX(3px); }
+
+.events-scroll-hint {
+  display: flex; align-items: center; gap: 0.5rem;
+  justify-content: flex-end;
+  padding: 0 4rem 2rem;
+  opacity: 0.35;
+  animation: hintPulse 2s ease-in-out infinite;
+}
+.events-scroll-hint span {
+  font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--cream);
+}
+.events-scroll-hint svg { color: var(--cream); width: 29px; height: 29px; }
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.35; transform: translateX(0); }
+  50%       { opacity: 0.65; transform: translateX(5px); }
+}
+
+/* ── CONTACT ── */
+.contact { background: #080809; text-align: center; padding: 9rem 4rem; }
+.contact-eyebrow { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rose); margin-bottom: 1.2rem; }
+.contact-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 700;
+  color: #fff; line-height: 1.05; margin-bottom: 1.5rem;
+}
+.contact-title em { font-style: italic; color: var(--rose); font-weight: 400; }
+.smooth-reveal-wrap {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  overflow: hidden;
+}
+.smooth-reveal-inner {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.smooth-reveal-inner.revealed { width: 100%; }
+.smooth-cursor {
+  display: inline-block;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--rose);
+  height: 0.8em;
+  vertical-align: middle;
+  opacity: 0;
+  animation: smoothCursorBlink 0.8s step-end infinite;
+}
+.smooth-cursor.visible { opacity: 1; }
+@keyframes smoothCursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.contact-sub { font-size: 0.95rem; color: rgba(255,255,255,0.4); max-width: 440px; margin: 0 auto 3rem; line-height: 1.75; }
+.contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 0 auto; width: 100%; }
+.btn-colorful {
+  position: relative; overflow: hidden;
+  background: #1e2530;
+  color: var(--cream); padding: 0.8rem 2rem; border-radius: 100px;
+  font-size: 0.82rem; font-weight: 500; text-decoration: none;
+  letter-spacing: 0.06em; transition: all 0.25s; cursor: none;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-colorful-glow {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+  opacity: 0.45; filter: blur(6px);
+  transition: opacity 0.5s;
+  border-radius: 100px;
+}
+.btn-colorful:hover .btn-colorful-glow { opacity: 0.85; }
+.btn-colorful-content {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-colorful:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(168,85,247,0.35); }
+
+/* ── FOOTER ── */
+.footer-wave-wrap {
+  display: block; line-height: 0;
+  background: #080809;
+}
+.footer-wave-wrap svg { display: block; width: 100%; height: 48px; }
+footer {
+  background: rgba(58,32,36,0.92);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-top: 1px solid rgba(200,122,130,0.18);
+  padding: 2rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.75);
+}
+footer p { font-size: 0.72rem; color: rgba(200,122,130,0.65); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 0.72rem; color: rgba(200,122,130,0.55); text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; cursor: none; }
+.footer-links a:hover { color: var(--rose); }
+
+/* ── SCROLL ANIMATIONS ── */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0; transform: translateY(36px);
+    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.from-left { transform: translateX(-44px); }
+  .reveal.from-right { transform: translateX(44px); }
+  .reveal.scale-up { transform: scale(0.94) translateY(16px); }
+  .reveal.visible { opacity: 1; transform: none; }
+  .word-reveal span {
+    display: inline-block; overflow: hidden; vertical-align: bottom;
+  }
+  .word-reveal span i {
+    display: inline-block; font-style: inherit;
+    transform: translateY(110%);
+    transition: transform 0.75s cubic-bezier(0.22,1,0.36,1);
+  }
+  .word-reveal.visible span i { transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+  nav { padding: 0.5rem; }
+  .nav-links li:not(:last-child) { display: none; }
+  section { padding: 5rem 1.5rem; }
+  .hero { grid-template-columns: 1fr; grid-template-rows: 1fr auto auto; padding-top: 6rem; }
+  .hero-content { grid-column: 1; grid-row: 1; padding: 2rem 1.5rem 1rem; }
+  .hero-right { grid-column: 1; grid-row: 2; flex-direction: row; gap: 2rem; padding: 0 1.5rem 2rem; justify-content: flex-start; align-items: center; }
+  .stat-divider { width: 1px; height: 40px; margin-left: 0; }
+  .hero-stats { flex-direction: row; gap: 1.5rem; text-align: left; }
+  .hero-big { display: none; }
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .projects-intro { grid-template-columns: 1fr; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .skills-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .events-carousel-track { padding: 0 1.5rem 3rem; }
+  footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+  .footer-links { justify-content: center; }
+  .hero-scroll-hint { display: none; }
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+<div id="scroll-progress"><div id="scroll-progress-bar"></div></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Work</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#events">More</a></li>
+    <li><a href="#contact" class="nav-cta">Say Hello</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <video id="heroVideo" class="hero-video" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4" autoplay muted playsinline></video>
+  <div class="hero-video-overlay"></div>
+
+  <div class="hero-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      <i>Where Data Meets<br><em id="typewriter-text"></em><span class="typewriter-cursor">|</span></i>
+    </h1>
+    <p class="hero-desc reveal">
+      I'm Shruti — an IE student at Georgia Tech living at the crossroads of finance, engineering, and technology. I turn complex systems into clear decisions.
+    </p>
+    <div class="hero-btns reveal">
+      <a href="#projects" class="btn-primary">
+        View Work
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#contact" class="btn-outline">Get In Touch</a>
+    </div>
+  </div>
+
+  <svg class="hero-wave" id="heroWaveSvg" viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path id="heroWavePath" d="M0 36 C360 72 720 0 1080 36 C1260 54 1380 24 1440 36 L1440 72 L0 72 Z" fill="#080809"/>
+  </svg>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar" role="marquee" aria-label="Skills and expertise">
+  <div class="marquee-inner" aria-hidden="true">
+    <span class="marquee-item">Industrial Engineering <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">FinTech <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Data Analytics <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Financial Modeling <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">LLM Pipelines <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Python &amp; SQL <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Operations Research <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Machine Learning <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">SEC EDGAR <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Georgia Tech <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Industrial Engineering <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">FinTech <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Data Analytics <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Financial Modeling <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">LLM Pipelines <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Python &amp; SQL <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Operations Research <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Machine Learning <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">SEC EDGAR <span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Georgia Tech <span class="marquee-sep">·</span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-label reveal">About</div>
+    <h2 class="section-title"><span><i>Engineering <em>systems,</em></i></span><br><i><em id="about-typewriter"></em><span class="typewriter-cursor" style="color:var(--rose)">|</span></i></h2>
+    <div class="about-grid">
+      <!-- Left: quote + body + headshot -->
+      <div class="reveal from-left">
+        <p class="about-lead">"I love breaking down complex systems, finding patterns in data, and turning numbers into decisions that actually move the needle."</p>
+        <div class="about-headshot reveal">
+          <img src="headshot.png" alt="Shruti Satheesh">
+        </div>
+      </div>
+
+      <!-- Right: education + involvements + resume -->
+      <div class="about-right reveal from-right">
+        <!-- Education -->
+        <div class="about-block">
+          <span class="about-block-label">Education</span>
+          <div class="about-block-content">
+            <h3 class="edu-degree">B.S. Industrial Engineering</h3>
+            <p class="edu-school"><span class="rose">Georgia</span> <span class="white">Institute of </span><span class="rose">Tech</span><span class="white">nology</span></p>
+            <ul class="edu-details">
+              <li>Economic &amp; Financial Systems Concentration</li>
+              <li><span class="white-text">Computer Science</span> Minor</li>
+              <li><span class="white-text">Expected Graduation:</span> Spring 2028</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Campus Involvements -->
+        <div class="about-block">
+          <span class="about-block-label">Campus Involvements</span>
+          <div class="about-block-content">
+            <ul class="campus-list">
+              <li>Society of Women Engineers</li>
+              <li>Undergraduate Consulting Club</li>
+              <li>Epic Intentions Consulting</li>
+              <li>Product at GT</li>
+              <li>Trading @ GT</li>
+              <li>India Club</li>
+              <li>A-Town Showdown</li>
+              <li>Atl Tamasha</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Where I want to land -->
+        <div class="about-block goals-block">
+          <div class="about-block-content" style="width:100%">
+            <div class="goals-pills">
+              <span class="goal-pill"><div class="goal-pill-spotlight"></div>Product Management</span>
+              <span class="goal-pill"><div class="goal-pill-spotlight"></div>Strategy Consulting</span>
+              <span class="goal-pill"><div class="goal-pill-spotlight"></div>Data Analytics</span>
+              <span class="goal-pill"><div class="goal-pill-spotlight"></div>FinTech</span>
+              <span class="goal-pill"><div class="goal-pill-spotlight"></div>Operations</span>
+              <span class="goal-pill"><div class="goal-pill-spotlight"></div>Growth &amp; Strategy</span>
+            </div>
+          </div>
+        </div>
+        <a href="resume.pdf" download class="resume-btn">
+          <span class="resume-btn-face resume-btn-front">Download my Résumé</span>
+          <span class="resume-btn-face resume-btn-back">↓ Get my Résumé</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <div class="container">
+    <div class="section-label reveal">Work</div>
+    <h2 class="section-title"><span><i>Where I've been</i></span><br><i><em id="exp-typewriter"></em><span class="typewriter-cursor">|</span></i></h2>
+    <div class="exp-list">
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-date">Jul 2026 – Dec 2026</div>
+          <span class="exp-badge badge-intern">Internship</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-org">Delta Air Lines</div>
+          <div class="exp-role">Incoming Intern</div>
+          <ul class="exp-bullets">
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-date">Jan 2026 – May 2026</div>
+          <span class="exp-badge badge-consult">Consulting</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-org">Greystone · Real Estate Finance &amp; Investment</div>
+          <div class="exp-role">Pro-Bono Finance Analyst</div>
+          <ul class="exp-bullets">
+            <li>Engineered a <span class="exp-highlight">3-pass LLM pipeline</span> automating structured data extraction from 11,000+ annual borrower financial documents</li>
+            <li>Achieved ~99% accuracy on CSV/Excel formats; benchmarked OpenAI, Claude, and Gemini across variable document types</li>
+            <li>Modeled cost-benefit scenarios projecting <span class="exp-highlight">$154K–$231K in annual savings</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-date">Apr 2026 – Present</div>
+          <span class="exp-badge badge-intern">Internship</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-org">CBS · Corporate Business Solutions</div>
+          <div class="exp-role">Project Management &amp; Operations Intern</div>
+          <ul class="exp-bullets">
+            <li>Optimized go-to-market strategy and client pitch delivery for <span class="exp-highlight">SAP Sapphire</span>, an international conference with 18k+ attendees</li>
+            <li>Interviewed C-suite leaders to transform travel policies, reducing T&amp;E expenses by <span class="exp-highlight">15%</span></li>
+            <li>Built a recruitment framework analyzing 30+ universities and 5 alternative channels to optimize talent acquisition</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-date">Sep 2025 – Nov 2025</div>
+          <span class="exp-badge badge-consult">Consulting</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-org">Atlanta Airport Chamber</div>
+          <div class="exp-role">Team Lead Consultant</div>
+          <ul class="exp-bullets">
+            <li>Segmented a database of <span class="exp-highlight">1,308 accounts</span> using Python &amp; SQL to surface customer retention drivers</li>
+            <li>Financial optimization strategy for membership tiers — projected <span class="exp-highlight">15× membership surge</span></li>
+            <li>Quantified ~$170K incremental revenue upside for leadership decision-making</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-date">Oct 2025 – Present</div>
+          <span class="exp-badge badge-lead">Leadership</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-org">Society of Women Engineers · Georgia Tech</div>
+          <div class="exp-role">Vice President of Finance</div>
+          <ul class="exp-bullets">
+            <li>Managing finances for <span class="exp-highlight">600+ members</span>, overseeing ~$120K in budget allocation</li>
+            <li>Directed semester-long fundraising initiatives and supervised two committee chairs</li>
+            <li>Aligned chapter funding strategy with organizational growth priorities alongside the executive board</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-date">Jan 2026 – Present</div>
+          <span class="exp-badge badge-research">Research</span>
+        </div>
+        <div class="exp-content">
+          <div class="exp-org">Vertically Integrated Projects · Georgia Tech</div>
+          <div class="exp-role">Student Analyst / Researcher</div>
+          <ul class="exp-bullets">
+            <li>Spring 2026: Redesigning medication labeling for better adherence — visual design intervention &amp; user study</li>
+            <li>Fall 2026: Equity Research Boutique analyst</li>
+          </ul>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="container">
+    <div class="projects-intro">
+      <div>
+        <div class="section-label reveal">Projects</div>
+        <h2 class="section-title"><i>Things I've <em id="projects-typewriter"></em><span class="typewriter-cursor">|</span></i></h2>
+      </div>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card reveal scale-up">
+        <span class="project-num">01</span>
+        <div class="project-title">Financial Dashboard</div>
+        <div class="project-desc">Live market analytics ingesting OHLCV data across 11 GICS sectors with a modular ETL pipeline — cut repeat query load time by 86% with client-ready correlation matrix exports.</div>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Streamlit</span>
+          <span class="project-tag">Pandas</span>
+          <span class="project-tag">ETL</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal scale-up">
+        <span class="project-num">02</span>
+        <div class="project-title">M&amp;A Deal Screener</div>
+        <div class="project-desc">Scraped 500+ SEC EDGAR filings across 6 industries, applied EV/EBITDA, CAGR, and margin filters to surface 40 ranked targets — reducing analyst screening from 8+ hours to under 45 minutes.</div>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">SEC EDGAR</span>
+          <span class="project-tag">Financial Modeling</span>
+          <span class="project-tag">SQL</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal scale-up">
+        <span class="project-num">03</span>
+        <div class="project-title">LLM Document Pipeline</div>
+        <div class="project-desc">3-pass LLM pipeline at Greystone automating structured extraction from 11,000+ financial documents. Benchmarked OpenAI, Claude &amp; Gemini achieving ~99% accuracy. Projected $154K–$231K annual savings.</div>
+        <div class="project-tags">
+          <span class="project-tag">LLMs</span>
+          <span class="project-tag">FastAPI</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Document AI</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal scale-up">
+        <span class="project-num">04</span>
+        <div class="project-title">CA Behavioral Health Analysis</div>
+        <div class="project-desc">Multi-source pipeline ingesting 170K+ rows across CSV, REST/JSON, and HTML. Engineered MHS1 utilization rate features and ran linear regression and KNN models to surface unemployment–mental health patterns.</div>
+        <div class="project-tags">
+          <span class="project-tag">Scikit-learn</span>
+          <span class="project-tag">Pandas</span>
+          <span class="project-tag">Regression</span>
+          <span class="project-tag">KNN</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="container">
+    <div class="section-label reveal">Skills</div>
+    <h2 class="section-title"><i>My <em id="skills-typewriter"></em><span class="typewriter-cursor">|</span></i></h2>
+    <div class="skills-layout">
+      <div class="reveal from-left">
+        <p class="skills-intro">A mix of engineering rigor, financial intuition, and computational muscle — built through coursework, real-world projects, and a healthy obsession with making systems work better.</p>
+      </div>
+      <div class="skills-groups reveal from-right">
+        <div class="skill-row">
+          <span class="skill-row-label">Languages</span>
+          <div class="skill-pills">
+            <span class="skill-pill core">Python</span>
+            <span class="skill-pill core">SQL</span>
+            <span class="skill-pill">MATLAB</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-label">Data &amp; ML</span>
+          <div class="skill-pills">
+            <span class="skill-pill core">Pandas</span>
+            <span class="skill-pill core">NumPy</span>
+            <span class="skill-pill">Scikit-learn</span>
+            <span class="skill-pill">PyTorch</span>
+            <span class="skill-pill">Matplotlib</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-label">Engineering</span>
+          <div class="skill-pills">
+            <span class="skill-pill">Streamlit</span>
+            <span class="skill-pill">FastAPI</span>
+            <span class="skill-pill">REST/JSON</span>
+            <span class="skill-pill">ETL Pipelines</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-label">Finance</span>
+          <div class="skill-pills">
+            <span class="skill-pill core">Financial Modeling</span>
+            <span class="skill-pill">Tableau</span>
+            <span class="skill-pill">Power BI</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-row-label">AI / LLMs</span>
+          <div class="skill-pills">
+            <span class="skill-pill core">LLM APIs</span>
+            <span class="skill-pill">Prompt Engineering</span>
+            <span class="skill-pill">Document AI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITIONS & EVENTS -->
+<section class="events" id="events">
+  <div class="container">
+    <div class="section-label reveal">Beyond the Classroom</div>
+    <h2 class="section-title word-reveal"><span><i>Competitions,</i></span> <span><i>conferences &amp;</i></span> <span><i><em>programs.</em></i></span></h2>
+  </div>
+
+  <div class="events-nav">
+    <button class="events-arrow hidden" id="eventsLeft" aria-label="Scroll left">&#8592;</button>
+    <button class="events-arrow" id="eventsRight" aria-label="Scroll right">&#8594;</button>
+  </div>
+
+  <div class="events-carousel-wrap" id="eventsCarousel">
+    <div class="events-carousel-track" id="eventsTrack">
+
+      <!-- original set -->
+      <div class="event-card ev-comp"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">25</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Case Competition</span>
+          <div class="event-card-name">Supply Chain Gals</div>
+          <span class="event-card-badge badge-winner">Competitor</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Women-focused supply chain case competition — applied industrial engineering and operations strategy to present a data-driven solution to a real supply chain challenge.</p>
+          <button class="event-overlay-btn" aria-label="View Supply Chain Gals details">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+      <div class="event-card ev-conf"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">26</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Conference</span>
+          <div class="event-card-name">NYSE NextGen Bootcamp</div>
+          <span class="event-card-badge badge-selected">Attendee</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Selective immersion at the New York Stock Exchange — financial markets, trading mechanics, and capital formation with NYSE executives and floor traders.</p>
+          <button class="event-overlay-btn" aria-label="View NYSE details">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+      <div class="event-card ev-fellow"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">26</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Fellowship</span>
+          <div class="event-card-name">BCG Advance Program</div>
+          <span class="event-card-badge badge-fellow">Fellow</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Highly selective consulting accelerator — case workshops, networking, and 1:1 mentorship with BCG consultants for high-potential undergraduates.</p>
+          <button class="event-overlay-btn" aria-label="View BCG details">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+      <div class="event-card ev-fellow"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">26</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Fellowship</span>
+          <div class="event-card-name">Point72 Academy 2026</div>
+          <span class="event-card-badge badge-fellow">Fellow</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Intensive finance &amp; investment management program by Point72 Asset Management — selected nationally from a competitive undergraduate applicant pool.</p>
+          <button class="event-overlay-btn" aria-label="View Point72 details">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+      <div class="event-card ev-conf"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">26</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Conference</span>
+          <div class="event-card-name">SWE WE26 Boston</div>
+          <span class="event-card-badge badge-selected">Attendee</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Society of Women Engineers annual conference in Boston — one of the largest gatherings of women engineers globally, featuring recruiting, workshops, and networking with industry leaders.</p>
+          <button class="event-overlay-btn" aria-label="View SWE WE26 details">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+      <!-- duplicate set for seamless loop -->
+      <div class="event-card ev-comp" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">25</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Case Competition</span>
+          <div class="event-card-name">Supply Chain Gals</div>
+          <span class="event-card-badge badge-winner">Competitor</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Women-focused supply chain case competition — applied industrial engineering and operations strategy to present a data-driven solution to a real supply chain challenge.</p>
+          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+      <div class="event-card ev-conf" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">26</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Conference</span>
+          <div class="event-card-name">NYSE NextGen Bootcamp</div>
+          <span class="event-card-badge badge-selected">Attendee</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Selective immersion at the New York Stock Exchange — financial markets, trading mechanics, and capital formation with NYSE executives and floor traders.</p>
+          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+      <div class="event-card ev-fellow" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">26</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Fellowship</span>
+          <div class="event-card-name">BCG Advance Program</div>
+          <span class="event-card-badge badge-fellow">Fellow</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Highly selective consulting accelerator — case workshops, networking, and 1:1 mentorship with BCG consultants for high-potential undergraduates.</p>
+          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+      <div class="event-card ev-fellow" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">26</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Fellowship</span>
+          <div class="event-card-name">Point72 Academy 2026</div>
+          <span class="event-card-badge badge-fellow">Fellow</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Intensive finance &amp; investment management program by Point72 Asset Management — selected nationally from a competitive undergraduate applicant pool.</p>
+          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+      <div class="event-card ev-conf" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
+        <div class="event-card-visual"><span class="event-card-year">26</span></div>
+        <div class="event-card-body">
+          <span class="event-card-type">Conference</span>
+          <div class="event-card-name">SWE WE26 Boston</div>
+          <span class="event-card-badge badge-selected">Attendee</span>
+        </div>
+        <div class="event-card-overlay">
+          <p class="event-overlay-detail">Society of Women Engineers annual conference in Boston — one of the largest gatherings of women engineers globally, featuring recruiting, workshops, and networking with industry leaders.</p>
+          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="events-scroll-hint">
+    <span>Scroll to explore</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-eyebrow reveal">Let's connect</div>
+    <h2 class="contact-title">
+      <i>Let's build something</i><br>
+      <i><em id="contact-typewriter"></em><span class="typewriter-cursor">|</span></i>
+    </h2>
+    <p class="contact-sub reveal">Whether it's a new project, an opportunity, or just a good conversation about fintech and data — I'm always happy to connect.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:sshruti1607@gmail.com" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        sshruti1607@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/shruti-satheesh/" target="_blank" rel="noopener" class="btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER WAVE -->
+<div class="footer-wave-wrap">
+  <svg id="footerWaveSvg" viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path id="footerWavePath" d="M0 24 C360 48 720 0 1080 24 C1260 36 1380 12 1440 24 L1440 48 L0 48 Z" fill="#050506"/>
+  </svg>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">Shruti Satheesh</span>
+  <p>Georgia Tech · Industrial Engineering</p>
+  <div class="footer-links">
+    <a href="mailto:sshruti1607@gmail.com">Email</a>
+    <a href="https://www.linkedin.com/in/shruti-satheesh/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+
+/* ── HERO VIDEO FADE LOOP ── */
+(function() {
+  const video = document.getElementById('heroVideo');
+  if (!video) return;
+  const FADE_DURATION = 600;
+  const FADE_OUT_BEFORE_END = 0.6;
+  let rafId = null;
+  let fadingOut = false;
+
+  function animateOpacity(target, duration) {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    const start = performance.now();
+    const from = parseFloat(video.style.opacity || '0');
+    function step(now) {
+      const t = Math.min(1, (now - start) / duration);
+      video.style.opacity = from + (target - from) * t;
+      if (t < 1) rafId = requestAnimationFrame(step);
+      else rafId = null;
+    }
+    rafId = requestAnimationFrame(step);
+  }
+
+  function fadeIn() { fadingOut = false; animateOpacity(1, FADE_DURATION); }
+
+  video.style.opacity = '0';
+  video.addEventListener('loadeddata', function() { video.play().catch(()=>{}); fadeIn(); });
+  video.addEventListener('timeupdate', function() {
+    if (fadingOut) return;
+    const rem = video.duration - video.currentTime;
+    if (!isNaN(rem) && rem <= FADE_OUT_BEFORE_END) {
+      fadingOut = true;
+      animateOpacity(0, FADE_DURATION);
+    }
+  });
+  video.addEventListener('ended', function() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    video.style.opacity = '0';
+    setTimeout(function() { video.currentTime = 0; video.play().catch(()=>{}); fadeIn(); }, 150);
+  });
+  if (video.readyState >= 2) { video.play().catch(()=>{}); fadeIn(); }
+})();
+
+/* ── PROGRESS BAR ── */
+(function() {
+  const progressBar = document.getElementById('scroll-progress-bar');
+  if (!progressBar) return;
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.transform = `scaleX(${Math.min(window.pageYOffset / docH, 1)})`;
+  }, { passive: true });
+})();
+
+/* ── TUBELIGHT NAV ── */
+(function() {
+  const links = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+  const sections = ['home','about','experience','projects','skills','events'];
+
+  function setActive(id) {
+    links.forEach(a => {
+      a.classList.toggle('nav-active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  setActive('home');
+
+  links.forEach(a => {
+    a.addEventListener('click', () => {
+      const href = a.getAttribute('href').replace('#','');
+      setActive(href);
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    let current = 'home';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.4) current = id;
+    });
+    setActive(current);
+  }, { passive: true });
+})();
+
+/* ── CURSOR ── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx+'px'; cur.style.top = my+'px'; });
+function animRing() {
+  rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+/* ── SCROLL REVEALS ── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('visible');
+    revealObserver.unobserve(entry.target);
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ── WORD REVEALS ── */
+const wordObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('visible');
+    entry.target.querySelectorAll('span i').forEach((w, i) => {
+      w.style.transitionDelay = (i * 0.08) + 's';
+    });
+    wordObserver.unobserve(entry.target);
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.word-reveal').forEach(el => wordObserver.observe(el));
+
+/* ── STAGGERED CHILDREN ── */
+const staggerObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const cards = entry.target.querySelectorAll('.reveal.scale-up');
+    cards.forEach((c, i) => {
+      setTimeout(() => c.classList.add('visible'), i * 90);
+    });
+    staggerObserver.unobserve(entry.target);
+  });
+}, { threshold: 0.05 });
+
+document.querySelectorAll('.projects-grid').forEach(g => staggerObserver.observe(g));
+
+/* ── COUNTER ANIMATION ── */
+function animateCounter(el, target, decimals = 0, duration = 1400) {
+  let start = null;
+  const step = ts => {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = (ease * target).toFixed(decimals);
+    el.textContent = decimals > 0 ? val : Math.round(val);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.querySelectorAll('[data-count]').forEach(el => {
+      const val = parseFloat(el.dataset.count);
+      const dec = String(val).includes('.') ? String(val).split('.')[1].length : 0;
+      animateCounter(el, val, dec);
+    });
+    counterObserver.unobserve(entry.target);
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.hero-stats').forEach(el => counterObserver.observe(el));
+
+/* ── EXPERIENCE STAGGER ── */
+const expObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const items = entry.target.querySelectorAll('.exp-item.reveal');
+    items.forEach((item, i) => {
+      setTimeout(() => item.classList.add('visible'), i * 100);
+    });
+    expObserver.unobserve(entry.target);
+  });
+}, { threshold: 0.05 });
+
+document.querySelectorAll('.exp-list').forEach(el => expObserver.observe(el));
+
+/* ── SKILL ROW STAGGER ── */
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.querySelectorAll('.skill-row').forEach((row, i) => {
+      row.style.opacity = '0';
+      row.style.transform = 'translateX(24px)';
+      row.style.transition = `opacity 0.55s ${i*0.07}s cubic-bezier(0.22,1,0.36,1), transform 0.55s ${i*0.07}s cubic-bezier(0.22,1,0.36,1)`;
+      setTimeout(() => { row.style.opacity = '1'; row.style.transform = 'none'; }, 50);
+    });
+    skillObserver.unobserve(entry.target);
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.skills-groups').forEach(el => skillObserver.observe(el));
+
+/* ── HERO WAVE MORPH ── */
+(function() {
+  const path = document.getElementById('heroWavePath');
+  if (!path) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let last = 0;
+  function lerp(a, b, f) { return a + (b - a) * f; }
+  function tick(ts) {
+    const dt = Math.min((ts - last) / 1000, 0.05);
+    last = ts;
+    const t = ts * 0.0008;
+    const s  = Math.sin(t);
+    const s2 = Math.sin(t * 1.3 + 1);
+    const s3 = Math.sin(t * 0.7 + 2);
+    const c1y = lerp(62, 72, (s  + 1) / 2);
+    const c2y = lerp(-18, 10, (s2 + 1) / 2);
+    const c3y = lerp(16, 60, (s3 + 1) / 2);
+    const c4y = lerp(4, 46,  (s  + 1) / 2);
+    const mid = lerp(20, 52, (s2 + 1) / 2);
+    path.setAttribute('d',
+      `M0 36 C360 ${c1y} 720 ${c2y} 1080 ${c3y} C1260 ${mid} 1380 ${c4y} 1440 36 L1440 72 L0 72 Z`
+    );
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+/* ── SPOTLIGHT CARDS ── */
+(function() {
+  document.querySelectorAll('.event-card').forEach(card => {
+    card.addEventListener('pointermove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--x', x.toFixed(1));
+      card.style.setProperty('--y', y.toFixed(1));
+    });
+  });
+})();
+
+/* ── EVENTS CAROUSEL DRAG ── */
+(function() {
+  const carouselWrap = document.getElementById('eventsCarousel');
+  if (carouselWrap) {
+    function checkCarousel() {
+      const rect = carouselWrap.getBoundingClientRect();
+      const fullyPast = rect.bottom <= window.innerHeight - carouselWrap.offsetHeight * 1.2;
+      carouselWrap.classList.toggle('in-view', fullyPast);
+    }
+    window.addEventListener('scroll', checkCarousel, { passive: true });
+    checkCarousel();
+  }
+})();
+
+/* ── CONTACT TYPEWRITER ── */
+(function() {
+  const el = document.getElementById('contact-typewriter');
+  if (!el) return;
+  const phrases = ['great together.', 'that matters.', 'meaningful.', 'that lasts.', 'with purpose.'];
+  let phraseIdx = 0, charIdx = 0, deleting = false, started = false;
+  const speed = 70, deleteSpeed = 35, waitTime = 1800;
+
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, charIdx + 1);
+      charIdx++;
+      if (charIdx === current.length) {
+        setTimeout(() => { deleting = true; tick(); }, waitTime);
+        return;
+      }
+    } else {
+      el.textContent = current.slice(0, charIdx - 1);
+      charIdx--;
+      if (charIdx === 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+      }
+    }
+    setTimeout(tick, deleting ? deleteSpeed : speed);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    if (started || !entries[0].isIntersecting) return;
+    started = true;
+    observer.disconnect();
+    setTimeout(tick, 400);
+  }, { threshold: 0.4 });
+  observer.observe(el.closest('section'));
+})();
+
+/* ── CONTACT SMOOTH REVEAL ── */
+(function() {
+  const lines = [
+    { inner: document.getElementById('contactReveal1'), cursor: document.getElementById('smoothCursor1') },
+    { inner: document.getElementById('contactReveal2'), cursor: document.getElementById('smoothCursor2') },
+  ];
+  if (!lines[0].inner) return;
+
+  const section = lines[0].inner.closest('section');
+  let triggered = false;
+
+  const observer = new IntersectionObserver(entries => {
+    if (triggered || !entries[0].isIntersecting) return;
+    triggered = true;
+    observer.disconnect();
+
+    lines.forEach(({ inner, cursor }, i) => {
+      const delay = 1000 + i * 1400;
+      setTimeout(() => {
+        cursor.classList.add('visible');
+        inner.classList.add('revealed');
+        // hide cursor after reveal finishes
+        setTimeout(() => {
+          if (i < lines.length - 1) cursor.classList.remove('visible');
+        }, 1900);
+      }, delay);
+    });
+  }, { threshold: 0.4 });
+
+  observer.observe(section);
+})();
+
+/* ── SKILLS TYPEWRITER ── */
+(function() {
+  const el = document.getElementById('skills-typewriter');
+  if (!el) return;
+  const phrases = ['toolkit.', 'strengths.', 'stack.', 'expertise.'];
+  let phraseIdx = 0, charIdx = 0, deleting = false, started = false;
+  const speed = 70, deleteSpeed = 35, waitTime = 1800;
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, charIdx + 1); charIdx++;
+      if (charIdx === current.length) { setTimeout(() => { deleting = true; tick(); }, waitTime); return; }
+    } else {
+      el.textContent = current.slice(0, charIdx - 1); charIdx--;
+      if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; }
+    }
+    setTimeout(tick, deleting ? deleteSpeed : speed);
+  }
+  const observer = new IntersectionObserver(entries => {
+    if (started || !entries[0].isIntersecting) return;
+    started = true; observer.disconnect(); setTimeout(tick, 400);
+  }, { threshold: 0.3 });
+  observer.observe(el.closest('section'));
+})();
+
+/* ── PROJECTS TYPEWRITER ── */
+(function() {
+  const el = document.getElementById('projects-typewriter');
+  if (!el) return;
+  const phrases = ['built.', 'designed.', 'shipped.', 'engineered.'];
+  let phraseIdx = 0, charIdx = 0, deleting = false, started = false;
+  const speed = 70, deleteSpeed = 35, waitTime = 1800;
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, charIdx + 1); charIdx++;
+      if (charIdx === current.length) { setTimeout(() => { deleting = true; tick(); }, waitTime); return; }
+    } else {
+      el.textContent = current.slice(0, charIdx - 1); charIdx--;
+      if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; }
+    }
+    setTimeout(tick, deleting ? deleteSpeed : speed);
+  }
+  const observer = new IntersectionObserver(entries => {
+    if (started || !entries[0].isIntersecting) return;
+    started = true; observer.disconnect(); setTimeout(tick, 400);
+  }, { threshold: 0.3 });
+  observer.observe(el.closest('section'));
+})();
+
+/* ── ABOUT TYPEWRITER ── */
+(function() {
+  const el = document.getElementById('about-typewriter');
+  if (!el) return;
+  const phrases = ['thinking in decisions.', 'building systems.', 'solving problems.', 'making it count.'];
+  let phraseIdx = 0, charIdx = 0, deleting = false, started = false;
+  const speed = 70, deleteSpeed = 35, waitTime = 1800;
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, charIdx + 1); charIdx++;
+      if (charIdx === current.length) { setTimeout(() => { deleting = true; tick(); }, waitTime); return; }
+    } else {
+      el.textContent = current.slice(0, charIdx - 1); charIdx--;
+      if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; }
+    }
+    setTimeout(tick, deleting ? deleteSpeed : speed);
+  }
+  const observer = new IntersectionObserver(entries => {
+    if (started || !entries[0].isIntersecting) return;
+    started = true; observer.disconnect(); setTimeout(tick, 400);
+  }, { threshold: 0.3 });
+  observer.observe(el.closest('section'));
+})();
+
+/* ── EXPERIENCE TYPEWRITER ── */
+(function() {
+  const el = document.getElementById('exp-typewriter');
+  if (!el) return;
+  const phrases = ['doing the work.', 'building things.', 'making an impact.', 'learning every day.'];
+  let phraseIdx = 0, charIdx = 0, deleting = false, started = false;
+  const speed = 70, deleteSpeed = 35, waitTime = 1800;
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, charIdx + 1); charIdx++;
+      if (charIdx === current.length) { setTimeout(() => { deleting = true; tick(); }, waitTime); return; }
+    } else {
+      el.textContent = current.slice(0, charIdx - 1); charIdx--;
+      if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; }
+    }
+    setTimeout(tick, deleting ? deleteSpeed : speed);
+  }
+  const observer = new IntersectionObserver(entries => {
+    if (started || !entries[0].isIntersecting) return;
+    started = true; observer.disconnect(); setTimeout(tick, 400);
+  }, { threshold: 0.3 });
+  observer.observe(el.closest('section'));
+})();
+
+/* ── TYPEWRITER ── */
+(function() {
+  const el = document.getElementById('typewriter-text');
+  if (!el) return;
+  const phrases = ['Decision-Making.', 'Strategy.', 'Systems Design.', 'Impact.', 'Innovation.'];
+  let phraseIdx = 0, charIdx = 0, deleting = false;
+  const speed = 70, deleteSpeed = 35, waitTime = 1800;
+
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, charIdx + 1);
+      charIdx++;
+      if (charIdx === current.length) {
+        setTimeout(() => { deleting = true; tick(); }, waitTime);
+        return;
+      }
+    } else {
+      el.textContent = current.slice(0, charIdx - 1);
+      charIdx--;
+      if (charIdx === 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+      }
+    }
+    setTimeout(tick, deleting ? deleteSpeed : speed);
+  }
+  setTimeout(tick, 600);
+})();
+
+/* ── FOOTER WAVE ── */
+(function() {
+  const path = document.getElementById('footerWavePath');
+  if (!path) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let t = 0;
+  function lerp(a, b, f) { return a + (b - a) * f; }
+  function tick() {
+    t += 0.038;
+    const s = Math.sin(t), s2 = Math.sin(t * 1.4 + 1), s3 = Math.sin(t * 0.8 + 2);
+    const c1y = lerp(32, 46, (s + 1) / 2);
+    const c2y = lerp(0, 14, (s2 + 1) / 2);
+    const c3y = lerp(18, 36, (s3 + 1) / 2);
+    const c4y = lerp(10, 26, (s + 1) / 2);
+    const mid = lerp(20, 30, (s2 + 1) / 2);
+    path.setAttribute('d',
+      `M0 24 C360 ${c1y} 720 ${c2y} 1080 ${c3y} C1260 ${mid} 1380 ${c4y} 1440 24 L1440 48 L0 48 Z`
+    );
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ── EVENTS SCROLL-JACK ── */
+(function() {
+  const wrap = document.getElementById('eventsCarousel');
+  if (!wrap) return;
+  let locked = false;
+  const section = wrap.closest('section');
+
+  function isCarouselScrollable() {
+    return wrap.scrollWidth > wrap.clientWidth + 2;
+  }
+  function isAtStart() { return wrap.scrollLeft <= 2; }
+  function isAtEnd() { return wrap.scrollLeft >= wrap.scrollWidth - wrap.clientWidth - 2; }
+
+  window.addEventListener('wheel', function(e) {
+    const rect = section.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.4;
+    if (!inView || !isCarouselScrollable()) return;
+    if (e.deltaY > 0 && !isAtEnd()) {
+      e.preventDefault();
+      wrap.scrollLeft += e.deltaY * 1.5;
+    } else if (e.deltaY < 0 && !isAtStart()) {
+      e.preventDefault();
+      wrap.scrollLeft += e.deltaY * 1.5;
+    }
+  }, { passive: false });
+})();
+
+/* ── PREFERS REDUCED MOTION ── */
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.reveal, .word-reveal').forEach(el => el.classList.add('visible'));
+}
+/* ── GOAL PILL SPOTLIGHT ── */
+(function() {
+  document.querySelectorAll('.goal-pill').forEach(pill => {
+    const spotlight = pill.querySelector('.goal-pill-spotlight');
+    if (!spotlight) return;
+    pill.addEventListener('mouseenter', () => { spotlight.style.opacity = '1'; });
+    pill.addEventListener('mouseleave', () => { spotlight.style.opacity = '0'; });
+    pill.addEventListener('mousemove', e => {
+      const rect = pill.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      spotlight.style.background = `radial-gradient(80px circle at ${x}px ${y}px, rgba(200,122,130,0.35), transparent 70%)`;
+    });
+  });
+})();
+</script>
+</body>
+</html>
