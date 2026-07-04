@@ -625,22 +625,18 @@ section { padding: 7rem 4rem; }
 .events-arrow:hover { background: rgba(200,122,130,0.15); border-color: rgba(200,122,130,0.4); color: var(--rose); }
 .events-arrow.hidden { opacity: 0.18; pointer-events: none; filter: grayscale(1); }
 .events-carousel-wrap {
-  overflow: hidden;
-  width: 100%;
+  overflow-x: scroll; overflow-y: hidden;
+  width: 100%; cursor: grab;
+  user-select: none; -webkit-user-select: none;
+  scrollbar-width: none; -ms-overflow-style: none;
   margin-top: 3rem;
 }
+.events-carousel-wrap::-webkit-scrollbar { display: none; }
+.events-carousel-wrap:active { cursor: grabbing; }
 .events-carousel-track {
   display: flex; gap: 14px;
   padding: 0 4rem 5rem;
   width: max-content;
-  animation: eventsMarquee 40s linear infinite;
-}
-.events-carousel-track { animation-play-state: paused; }
-.events-carousel-wrap.in-view .events-carousel-track { animation-play-state: running; }
-.events-carousel-wrap.in-view:hover .events-carousel-track { animation-play-state: paused; }
-@keyframes eventsMarquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
 }
 
 .event-card {
@@ -1371,71 +1367,6 @@ footer p { font-size: 0.72rem; color: rgba(200,122,130,0.65); }
         </div>
       </div>
 
-      <!-- duplicate set for seamless loop -->
-      <div class="event-card ev-comp" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
-        <div class="event-card-visual"><span class="event-card-year">25</span></div>
-        <div class="event-card-body">
-          <span class="event-card-type">Case Competition</span>
-          <div class="event-card-name">Supply Chain Gals</div>
-          <span class="event-card-badge badge-winner">Competitor</span>
-        </div>
-        <div class="event-card-overlay">
-          <p class="event-overlay-detail">Women-focused supply chain case competition — applied industrial engineering and operations strategy to present a data-driven solution to a real supply chain challenge.</p>
-          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
-        </div>
-      </div>
-
-      <div class="event-card ev-conf" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
-        <div class="event-card-visual"><span class="event-card-year">26</span></div>
-        <div class="event-card-body">
-          <span class="event-card-type">Conference</span>
-          <div class="event-card-name">NYSE NextGen Bootcamp</div>
-          <span class="event-card-badge badge-selected">Attendee</span>
-        </div>
-        <div class="event-card-overlay">
-          <p class="event-overlay-detail">Selective immersion at the New York Stock Exchange — financial markets, trading mechanics, and capital formation with NYSE executives and floor traders.</p>
-          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
-        </div>
-      </div>
-
-      <div class="event-card ev-fellow" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
-        <div class="event-card-visual"><span class="event-card-year">26</span></div>
-        <div class="event-card-body">
-          <span class="event-card-type">Fellowship</span>
-          <div class="event-card-name">BCG Advance Program</div>
-          <span class="event-card-badge badge-fellow">Fellow</span>
-        </div>
-        <div class="event-card-overlay">
-          <p class="event-overlay-detail">Highly selective consulting accelerator — case workshops, networking, and 1:1 mentorship with BCG consultants for high-potential undergraduates.</p>
-          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
-        </div>
-      </div>
-
-      <div class="event-card ev-fellow" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
-        <div class="event-card-visual"><span class="event-card-year">26</span></div>
-        <div class="event-card-body">
-          <span class="event-card-type">Fellowship</span>
-          <div class="event-card-name">Point72 Academy 2026</div>
-          <span class="event-card-badge badge-fellow">Fellow</span>
-        </div>
-        <div class="event-card-overlay">
-          <p class="event-overlay-detail">Intensive finance &amp; investment management program by Point72 Asset Management — selected nationally from a competitive undergraduate applicant pool.</p>
-          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
-        </div>
-      </div>
-
-      <div class="event-card ev-conf" aria-hidden="true"><div class="event-spotlight" aria-hidden="true"></div>
-        <div class="event-card-visual"><span class="event-card-year">26</span></div>
-        <div class="event-card-body">
-          <span class="event-card-type">Conference</span>
-          <div class="event-card-name">SWE WE26 Boston</div>
-          <span class="event-card-badge badge-selected">Attendee</span>
-        </div>
-        <div class="event-card-overlay">
-          <p class="event-overlay-detail">Society of Women Engineers annual conference in Boston — one of the largest gatherings of women engineers globally, featuring recruiting, workshops, and networking with industry leaders.</p>
-          <button class="event-overlay-btn" tabindex="-1">View <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button>
-        </div>
-      </div>
 
     </div>
   </div>
@@ -1953,31 +1884,46 @@ document.querySelectorAll('.skills-groups').forEach(el => skillObserver.observe(
   tick();
 })();
 
-/* ── EVENTS SCROLL-JACK ── */
+/* ── EVENTS CAROUSEL ── */
 (function() {
   const wrap = document.getElementById('eventsCarousel');
-  if (!wrap) return;
-  let locked = false;
-  const section = wrap.closest('section');
+  const track = document.getElementById('eventsTrack');
+  if (!wrap || !track) return;
 
-  function isCarouselScrollable() {
-    return wrap.scrollWidth > wrap.clientWidth + 2;
+  const btnL = document.getElementById('eventsLeft');
+  const btnR = document.getElementById('eventsRight');
+  const cardW = () => (track.querySelector('.event-card')?.offsetWidth || 340) + 14;
+
+  function updateArrows() {
+    btnL.classList.toggle('hidden', wrap.scrollLeft < 10);
+    btnR.classList.toggle('hidden', wrap.scrollLeft >= wrap.scrollWidth - wrap.clientWidth - 10);
   }
-  function isAtStart() { return wrap.scrollLeft <= 2; }
-  function isAtEnd() { return wrap.scrollLeft >= wrap.scrollWidth - wrap.clientWidth - 2; }
+  wrap.addEventListener('scroll', updateArrows, { passive: true });
+  updateArrows();
 
-  window.addEventListener('wheel', function(e) {
-    const rect = section.getBoundingClientRect();
-    const inView = rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.4;
-    if (!inView || !isCarouselScrollable()) return;
-    if (e.deltaY > 0 && !isAtEnd()) {
-      e.preventDefault();
-      wrap.scrollLeft += e.deltaY * 1.5;
-    } else if (e.deltaY < 0 && !isAtStart()) {
-      e.preventDefault();
-      wrap.scrollLeft += e.deltaY * 1.5;
-    }
-  }, { passive: false });
+  btnL.addEventListener('click', () => wrap.scrollBy({ left: -cardW(), behavior: 'smooth' }));
+  btnR.addEventListener('click', () => wrap.scrollBy({ left:  cardW(), behavior: 'smooth' }));
+
+  let isDown = false, startX = 0, scrollLeft = 0, velocity = 0, lastX = 0, rafId = null;
+  wrap.addEventListener('mousedown', e => {
+    isDown = true; startX = e.pageX - wrap.offsetLeft;
+    scrollLeft = wrap.scrollLeft; lastX = e.pageX; velocity = 0;
+    cancelAnimationFrame(rafId);
+  });
+  wrap.addEventListener('mouseleave', () => { isDown = false; momentum(); });
+  wrap.addEventListener('mouseup',    () => { isDown = false; momentum(); });
+  wrap.addEventListener('mousemove', e => {
+    if (!isDown) return; e.preventDefault();
+    const x = e.pageX - wrap.offsetLeft;
+    velocity = e.pageX - lastX; lastX = e.pageX;
+    wrap.scrollLeft = scrollLeft - (x - startX);
+  });
+  function momentum() {
+    if (Math.abs(velocity) < 0.5) return;
+    velocity *= 0.96;
+    wrap.scrollLeft -= velocity * 0.4;
+    rafId = requestAnimationFrame(momentum);
+  }
 })();
 
 /* ── PREFERS REDUCED MOTION ── */
